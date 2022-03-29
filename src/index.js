@@ -3,11 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+import { BrowserRouter, Routes, Route, Link, HashRouter, useNavigate } from 'react-router-dom'
+import storage from './pages/utils/storage'
+import memory from './pages/utils/memory'
+import Login from './pages/login/login'
+import Admin from './pages/admin/admin'
+const user = storage.getUser()
+memory.user = user
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <BrowserRouter>
+   <App/>,
+  </BrowserRouter>,
+      // {/* <App /> */}
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

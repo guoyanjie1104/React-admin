@@ -1,0 +1,25 @@
+.logo {
+    height: 32px;
+    margin: 16px;
+    background: rgb(62, 49, 243);
+    color: aliceblue;
+    text-align: center;
+    line-height: 32px;
+  }
+  .site-layout .site-layout-background.content{
+    background-color: aliceblue;
+    margin-top: 10px;
+  }
+  .site-layout .site-layout-background.top {
+    background: rgb(53, 102, 238);
+    display: flex;
+    justify-content: flex-end;
+    text-align: right;
+    color: white;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+  .site-layout .site-layout-background.top .out{
+    color: aqua;
+    margin-right: 20px;
+  }
