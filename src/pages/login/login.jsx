@@ -8,7 +8,8 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './login.css'
 import { render } from 'react-dom'
-
+import {store,addz} from '../../store/store'
+// console.log(store.dispatch(10,{type:'add',count:10}));
 function Login() {
   const Nav = useNavigate()
   function login(event) {
@@ -48,28 +49,29 @@ function Login() {
         console.log(error)
       })
   }
+  function add(params) {
+    // 状态管理累加
+    store.dispatch(addz)
+  }
+  function getnum(params) {
+    store.dispatch({type:'sj',count:'gyj-login'})
+    store.subscribe()
+    console.log(store.getState().calculate.num);
+  }
   // 函数组件生命周期
   useEffect(()=>{
     console.log(memory.user);
 },[])
 // state
 const setLineData = React.useState(memory.user);
-  // if(setLineData[0].username){
-  //   console.log(setLineData[0].username);
-  //   return (
-  //    <div>
-  //        登录成功 
-        
-  //     </div>
-    
-  //   )
-  // }
   return (
     <div className='login'>
       <header className='toptitle'>后台管理系统</header>
       <section>
         <div className="formbox">
           <h2 className='title'>立即登录</h2>
+          <h2 onClick={add}>add</h2>
+          <h2 onClick={getnum}>get----{store.getState().calculate.num}</h2>
           <Form
             name="normal_login"
             className="login-form"

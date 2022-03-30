@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {
   BrowserRouter, Routes, Route, Link, HashRouter,
-  NavLink, Navigate, useNavigate, useParams, 
+  NavLink, Navigate, useNavigate, useParams,
 } from 'react-router-dom'
 import axios from 'axios'
-import { message } from 'antd';
+import { message, Layout } from 'antd'
 import storage from '../utils/storage.js'
-import App from '../../App'
+import PubSub from 'pubsub-js'
 // 左侧导航组件
 import Leftnav from '../../components/left-nav/index.jsx';
 // 头部
@@ -22,18 +22,31 @@ import User from '../user/user'
 import Bars from '../chars/bars'
 import Line from '../chars/line'
 import Pie from '../chars/pie'
-import { Layout } from 'antd';
-const { Content } = Layout;
+const { Content, Header } = Layout;
 class Admin extends React.Component {
-  state = {
-    routers: [],
-    collapsed: false,
-    isLoginout: false,
-    loading: true,
-  };
+  constructor(props){
+    super(props)
+    var routeq = localStorage.getItem('getroute')
+    this.state={
+      routename: routeq||'首页',
+      routers: [],
+      collapsed: false,
+      isLoginout: false,
+      loading: true,
+    }
+    console.log(routeq);
+  }
   onCollapse = collapsed => {
     this.setState({ collapsed });
   };
+  mySubscriber = (msg, data) => {
+    console.log(msg, data);
+    console.log(this);
+    var routeq = localStorage.getItem('getroute')
+    this.setState({
+      routename: routeq||data
+    })
+  }
   componentDidMount() {
     var that = this
     axios.get('http://localhost:5000/getrouter', { params: { username: 'admin', password: '1234' } }).then(function (res) {
@@ -46,6 +59,19 @@ class Admin extends React.Component {
     }).catch(function (error) {
       console.log(error)
     })
+    // pubsub.subscribe('delete',(data)=>{
+    //   console.log(data);  
+    //   })
+    var routeq = localStorage.getItem('getroute')
+    var token = PubSub.subscribe('getroute', this.mySubscriber);
+  }
+  componentDidUpdate(){
+  }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+   return null
+  }
+  componentWillUnmount(){
+    localStorage.removeItem('getroute')
   }
   // 退出登录
   Loginout = () => {
@@ -70,21 +96,29 @@ class Admin extends React.Component {
           <Layout style={{ minHeight: '100vh' }}>
             <Leftnav value={this.state.routers}></Leftnav>
             <Layout className="site-layout">
-              <Headernav></Headernav>
+              {/* <Headernav></Headernav> */}
+              <Header className="site-layout-background box" style={{ padding: 0 }} >
+                <div className="top">
+                  <div>欢迎admin</div>
+                  <div style={{ margin: '0px 10px' }}>|</div>
+                  <div onClick={this.Loginout} className='loginout'>退出</div>
+                </div>
+                <div className='routename'>
+                  {this.state.routename}
+                </div>
+              </Header>
               {/* 内容区 */}
               <Content style={{ margin: '0 16px' }}>
                 <div className="site-layout-background content" style={{ padding: 24, minHeight: 360 }}>
-                  <NavLink to='categroy'>1111</NavLink>
-                  <br/>
                   <Routes>
-                      <Route path='/' element={<Home />}></Route>
-                      <Route path='/home' element={<Home />}></Route>
-                      <Route path='/categroy' element={<Categroy/>}></Route>
-                      <Route path='product' element={<Product />}></Route>
-                      <Route path='/user' element={<User />}></Route>
-                      <Route path='/bars' element={<Bars />}></Route>
-                      <Route path='/line' element={<Line />}></Route>
-                      <Route path='/pie' element={<Pie />}></Route>
+                    <Route path='/' element={<Home />}></Route>
+                    <Route path='/home' element={<Home />}></Route>
+                    <Route path='/categroy' element={<Categroy />}></Route>
+                    <Route path='product' element={<Product />}></Route>
+                    <Route path='/user' element={<User />}></Route>
+                    <Route path='/bars' element={<Bars />}></Route>
+                    <Route path='/line' element={<Line />}></Route>
+                    <Route path='/pie' element={<Pie />}></Route>
                   </Routes>
                 </div>
               </Content>

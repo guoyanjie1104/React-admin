@@ -8,15 +8,20 @@ import storage from './pages/utils/storage'
 import memory from './pages/utils/memory'
 import Login from './pages/login/login'
 import Admin from './pages/admin/admin'
+// import { createStore, combineReducers } from 'redux'
+import { connect } from 'react-redux';
+import { Provider } from 'react-redux';
+import { incrementAction, reduceAction, calculate ,store} from './store/store';
 const user = storage.getUser()
 memory.user = user
+console.log(store);
+console.log(store.getState());
 ReactDOM.render(
-  // <React.StrictMode>
   <BrowserRouter>
-   <App/>,
+    <Provider store={store}>
+      <App />,
+    </Provider>
   </BrowserRouter>,
-      // {/* <App /> */}
-  // </React.StrictMode>,
   document.getElementById('root')
 );
 

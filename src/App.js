@@ -10,6 +10,7 @@ import Admin from './pages/admin/admin'
 import Home from './pages/home/home'
 import { BrowserRouter, Routes, Route, Link, HashRouter, withRouter, NavLink, Navigate, useNavigate,
    useParams,useRoutes } from 'react-router-dom'
+   import {connect} from 'react-redux'
 // class App extends React.Component{
 //   render(){
 //     return(
