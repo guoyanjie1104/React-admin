@@ -70,8 +70,6 @@ const setLineData = React.useState(memory.user);
       <section>
         <div className="formbox">
           <h2 className='title'>立即登录</h2>
-          <h2 onClick={add}>add</h2>
-          <h2 onClick={getnum}>get----{store.getState().calculate.num}</h2>
           <Form
             name="normal_login"
             className="login-form"

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   BrowserRouter, Routes, Route, Link, HashRouter,
-  NavLink, Navigate, useNavigate, useParams,
+  NavLink, Navigate, useNavigate, useParams,useLocation
 } from 'react-router-dom'
 import axios from 'axios'
 import { message, Layout } from 'antd'
@@ -26,15 +26,17 @@ const { Content, Header } = Layout;
 class Admin extends React.Component {
   constructor(props){
     super(props)
+    console.log(useLocation);
     var routeq = localStorage.getItem('getroute')
+    var routepath = localStorage.getItem('getroutepath')
     this.state={
       routename: routeq||'首页',
+      routepath:'/'+routepath||'/home',
       routers: [],
       collapsed: false,
       isLoginout: false,
       loading: true,
     }
-    console.log(routeq);
   }
   onCollapse = collapsed => {
     this.setState({ collapsed });
@@ -76,6 +78,8 @@ class Admin extends React.Component {
   // 退出登录
   Loginout = () => {
     const hide = message.loading('退出登录..', 0);
+    localStorage.removeItem('getroutesub')
+    localStorage.removeItem('getroutepath')
     setTimeout(hide, 500);
     storage.removeUser()
     this.setState({
